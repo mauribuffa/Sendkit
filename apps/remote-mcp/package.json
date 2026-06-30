@@ -1,0 +1,19 @@
+{
+  "name": "sendkit-remote-mcp",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts"
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^26.0.1"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "hono": "^4.12.27",
+    "sendkit-core": "workspace:*"
+  }
+}

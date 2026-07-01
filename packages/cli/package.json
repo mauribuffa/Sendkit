@@ -5,7 +5,8 @@
   "type": "module",
   "dependencies": {
     "commander": "^15.0.0",
-    "sendkit-core": "workspace:*"
+    "sendkit-core": "workspace:*",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^26.0.1"

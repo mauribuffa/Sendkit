@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const telegramMessageInputSchema = z.object({
   chatId: z.string().min(1, "Chat ID is required"),
@@ -33,4 +33,3 @@ export const telegramMessageOutputSchema = z.object({
 export type TelegramMessageInput = z.infer<typeof telegramMessageInputSchema>;
 export type TelegramMessageOptions = z.infer<typeof telegramMessageOptionsSchema>;
 export type TelegramMessageOutput = z.infer<typeof telegramMessageOutputSchema>;
-

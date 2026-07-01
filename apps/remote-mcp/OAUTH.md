@@ -13,12 +13,12 @@ user, without the client ever seeing the user's password.**
 
 There are four roles:
 
-| Role | Who it is here |
-|------|----------------|
-| **Resource Owner** | The human user. |
-| **Client** | The app making requests — e.g. an MCP client like Claude, Cursor, the MCP Inspector. |
-| **Authorization Server (AS)** | Issues tokens after the user logs in. **This is Clerk.** |
-| **Resource Server (RS)** | The API that holds protected data and checks tokens. **This is our MCP server.** |
+| Role                          | Who it is here                                                                       |
+| ----------------------------- | ------------------------------------------------------------------------------------ |
+| **Resource Owner**            | The human user.                                                                      |
+| **Client**                    | The app making requests — e.g. an MCP client like Claude, Cursor, the MCP Inspector. |
+| **Authorization Server (AS)** | Issues tokens after the user logs in. **This is Clerk.**                             |
+| **Resource Server (RS)**      | The API that holds protected data and checks tokens. **This is our MCP server.**     |
 
 The flow, end to end:
 
@@ -44,7 +44,7 @@ Key properties:
 ### Why this matters for MCP
 
 MCP clients are arbitrary third-party apps. They can't be pre-registered by hand,
-and they must discover *on their own* how to authenticate to whatever server a
+and they must discover _on their own_ how to authenticate to whatever server a
 user points them at. OAuth 2.1 + the discovery metadata below makes that
 automatic: a client can walk up to any compliant MCP server and figure out the
 whole login flow from a single 401 response.
@@ -54,7 +54,7 @@ whole login flow from a single 401 response.
 ## 2. The `.well-known` thing (discovery)
 
 `.well-known/` is a **standardized URL prefix** (RFC 8615). The idea: if every
-server publishes machine-readable config at a *predictable, fixed path*, clients
+server publishes machine-readable config at a _predictable, fixed path_, clients
 can discover capabilities without anyone hand-configuring them. You've seen this
 pattern before — `/.well-known/security.txt`, `/.well-known/apple-app-site-association`,
 ACME/Let's Encrypt challenges, etc.
@@ -64,7 +64,7 @@ OAuth uses it for two discovery documents:
 ### a) Protected Resource Metadata — `/.well-known/oauth-protected-resource` (RFC 9728)
 
 Served by the **Resource Server** (us). It answers the client's question:
-*"I got a 401 from this API — which authorization server do I log in to?"*
+_"I got a 401 from this API — which authorization server do I log in to?"_
 
 Our server returns (see the live output):
 
@@ -104,7 +104,7 @@ POST /:botToken/mcp  + Authorization: Bearer <token>  → 200 ✅
 ```
 
 The `WWW-Authenticate` response header is the entry point of this whole chain —
-it's how a 401 tells the client *where* the discovery document lives.
+it's how a 401 tells the client _where_ the discovery document lives.
 
 ### Dynamic Client Registration (DCR)
 
@@ -166,17 +166,14 @@ app.post("/:botToken/mcp", async (c) => {
 
   // 2. Pull the raw bearer token out of the Authorization header.
   const authHeader = c.req.header("Authorization");
-  const token = authHeader?.startsWith("Bearer ")
-    ? authHeader.slice("Bearer ".length)
-    : undefined;
+  const token = authHeader?.startsWith("Bearer ") ? authHeader.slice("Bearer ".length) : undefined;
 
   // 3. Turn Clerk's result into MCP AuthInfo (undefined => not authenticated).
   const authInfo = verifyClerkToken(requestState.toAuth(), token);
 
   // 4. No valid token => 401 that points the client at discovery.
   if (!authInfo) {
-    const resourceMetadataUrl =
-      `${new URL(c.req.url).origin}/.well-known/oauth-protected-resource`;
+    const resourceMetadataUrl = `${new URL(c.req.url).origin}/.well-known/oauth-protected-resource`;
     return c.json({ error: "Unauthorized" }, 401, {
       "WWW-Authenticate": `Bearer resource_metadata="${resourceMetadataUrl}"`,
     });
@@ -202,9 +199,9 @@ app.post("/:botToken/mcp", async (c) => {
 This server has **two** independent pieces of information per request, and it's
 important not to confuse them:
 
-- **`Authorization: Bearer <oauth_token>`** — *who* is calling. Verified by Clerk.
+- **`Authorization: Bearer <oauth_token>`** — _who_ is calling. Verified by Clerk.
   This is authentication.
-- **`:botToken` path param** — *which* Telegram bot to send through. This is a
+- **`:botToken` path param** — _which_ Telegram bot to send through. This is a
   tenant/routing selector, passed into `createServer(botToken)` and ultimately to
   `sendTelegramMessage`.
 
@@ -213,7 +210,7 @@ proves the caller is a legitimate, logged-in user. The bot token in the URL is
 what scopes the action to a specific Telegram bot.
 
 > Security note: because the bot token currently lives in the URL path, anyone
-> with a valid Clerk token *and* knowledge of a bot token can use that bot. If
+> with a valid Clerk token _and_ knowledge of a bot token can use that bot. If
 > bot tokens should be tied to specific users, that mapping would need to live in
 > a datastore keyed by the authenticated `userId` (available from `authInfo`),
 > rather than being trusted from the URL. Out of scope for the current change,
@@ -224,16 +221,19 @@ what scopes the action to a specific Telegram bot.
 ## 4. Configuration checklist
 
 **Clerk Dashboard:**
+
 1. Create an **OAuth application**.
 2. Enable **Dynamic client registration** (required for MCP clients to self-register).
 
 **`apps/remote-mcp/.env`:**
+
 ```
 CLERK_SECRET_KEY=sk_...
 CLERK_PUBLISHABLE_KEY=pk_...
 ```
 
 **Run:**
+
 ```
 bun run dev:remote-mcp        # Bun auto-loads .env
 ```

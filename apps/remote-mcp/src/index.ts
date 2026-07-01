@@ -7,18 +7,14 @@ import {
   verifyClerkToken,
 } from "@clerk/mcp-tools/server";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import {
-  WebStandardStreamableHTTPServerTransport
-} from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
+import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
 import { sendTelegramMessage, telegramMessageInputSchema } from "sendkit-core";
 
 const secretKey = process.env.CLERK_SECRET_KEY;
 const publishableKey = process.env.CLERK_PUBLISHABLE_KEY;
 
 if (!secretKey || !publishableKey) {
-  throw new Error(
-    "Missing CLERK_SECRET_KEY or CLERK_PUBLISHABLE_KEY environment variables."
-  );
+  throw new Error("Missing CLERK_SECRET_KEY or CLERK_PUBLISHABLE_KEY environment variables.");
 }
 
 const clerkClient = createClerkClient({ secretKey, publishableKey });
@@ -26,8 +22,8 @@ const clerkClient = createClerkClient({ secretKey, publishableKey });
 function createServer(botToken: string) {
   const server = new McpServer({
     name: "sendkit-remote",
-    version: "0.0.0"
-  })
+    version: "0.0.0",
+  });
 
   server.registerTool(
     "telegram",
@@ -40,19 +36,19 @@ function createServer(botToken: string) {
       const result = await sendTelegramMessage({
         ...input,
         botToken,
-      })
+      });
 
       return {
         content: [
           {
             type: "text",
             text: `Sent Telegram message ${result.messageId} to chat ${result.chatId}`,
-          }
+          },
         ],
         structuredContent: result,
-      }
-    }
-  )
+      };
+    },
+  );
 
   return server;
 }
@@ -79,9 +75,7 @@ app.post("/:botToken/mcp", async (c) => {
     acceptsToken: "oauth_token",
   });
   const authHeader = c.req.header("Authorization");
-  const token = authHeader?.startsWith("Bearer ")
-    ? authHeader.slice("Bearer ".length)
-    : undefined;
+  const token = authHeader?.startsWith("Bearer ") ? authHeader.slice("Bearer ".length) : undefined;
   const authInfo = verifyClerkToken(requestState.toAuth(), token);
 
   if (!authInfo) {
@@ -120,5 +114,5 @@ export default {
     url.host = req.headers.get("x-forwarded-host") || url.host;
 
     return app.fetch(new Request(url.toString(), req));
-  }
-}
+  },
+};

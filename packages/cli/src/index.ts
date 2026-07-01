@@ -20,29 +20,31 @@ function writeTelegramBotToken(token: string) {
 
 function getTelegramBotToken() {
   if (!existsSync(configPath)) {
-    throw new Error(`Config file not found at ${configPath}. Please set the TELEGRAM_BOT_TOKEN environment variable by running 'sendkit init --telegram-bot-token <botToken>'.`);
+    throw new Error(
+      `Config file not found at ${configPath}. Please set the TELEGRAM_BOT_TOKEN environment variable by running 'sendkit init --telegram-bot-token <botToken>'.`,
+    );
   }
 
   const config = cliConfigSchema.parse(JSON.parse(readFileSync(configPath, "utf-8")));
   const token = config.telegramBotToken;
 
   if (!token) {
-    throw new Error(`Telegram bot token not found in config file at ${configPath}. Please set the TELEGRAM_BOT_TOKEN environment variable or create the config file.`);
+    throw new Error(
+      `Telegram bot token not found in config file at ${configPath}. Please set the TELEGRAM_BOT_TOKEN environment variable or create the config file.`,
+    );
   }
 
   return token;
 }
 
-program
-  .name("sendkit")
-  .description("SendKit CLI backed by sendkit-core")
+program.name("sendkit").description("SendKit CLI backed by sendkit-core");
 
 program
   .command("init")
   .description("Configure SendKit CLI local settings")
   .requiredOption("--telegram-bot-token <botToken>", "Telegram bot token")
   .action(async (options: { telegramBotToken: string }) => {
-    writeTelegramBotToken(options.telegramBotToken)
+    writeTelegramBotToken(options.telegramBotToken);
     console.log(`Telegram bot token saved to ${configPath}`);
   });
 

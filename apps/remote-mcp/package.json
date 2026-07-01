@@ -8,9 +8,6 @@
       "import": "./src/index.ts"
     }
   },
-  "devDependencies": {
-    "@types/node": "^26.0.1"
-  },
   "dependencies": {
     "@clerk/backend": "^3.9.0",
     "@clerk/mcp-tools": "^0.5.0",

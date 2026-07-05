@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { Command } from "commander";
 import { z } from "zod";
 import { homedir } from "node:os";

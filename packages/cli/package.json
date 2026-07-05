@@ -1,14 +1,33 @@
 {
   "name": "@mrb-dev/sendkit",
   "version": "0.0.0",
-  "private": true,
+  "bin": {
+    "sendkit": "./dist/index.js"
+  },
   "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "commander": "^15.0.0",
     "@mrb-dev/sendkit-core": "workspace:*",
     "zod": "^4.4.3"
   },
   "scripts": {
-    "build": "tsdown"
+    "build": "tsdown",
+    "pack:dry": "bun run build && bun pm pack --dry-run",
+    "prepublishOnly": "bun run build"
   }
 }

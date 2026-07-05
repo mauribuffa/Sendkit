@@ -16,7 +16,10 @@
     "lint:fix": "oxlint . --fix",
     "build:core": "bun run --filter @mrb-dev/sendkit-core build",
     "build:cli": "bun run --filter @mrb-dev/sendkit build",
-    "build:mcp": "bun run --filter @mrb-dev/sendkit-mcp build",
+    "build:local-mcp": "bun run --filter @mrb-dev/sendkit-mcp build",
+    "release:pack:core": "bun run --filter @mrb-dev/sendkit-core pack:dry",
+    "release:pack:cli": "bun run --filter @mrb-dev/sendkit pack:dry",
+    "release:pack:local-mcp": "bun run --filter @mrb-dev/sendkit-mcp pack:dry",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

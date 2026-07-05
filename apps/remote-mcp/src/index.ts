@@ -8,7 +8,7 @@ import {
 } from "@clerk/mcp-tools/server";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
-import { sendTelegramMessage, telegramMessageInputSchema } from "sendkit-core";
+import { sendTelegramMessage, telegramMessageInputSchema } from "@mrb-dev/sendkit-core";
 
 const secretKey = process.env.CLERK_SECRET_KEY;
 const publishableKey = process.env.CLERK_PUBLISHABLE_KEY;

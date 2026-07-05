@@ -14,6 +14,9 @@
     "format:check": "oxfmt . --check",
     "lint": "oxlint . --deny-warnings",
     "lint:fix": "oxlint . --fix",
+    "build:core": "bun run --filter @mrb-dev/sendkit-core build",
+    "build:cli": "bun run --filter @mrb-dev/sendkit build",
+    "build:mcp": "bun run --filter @mrb-dev/sendkit-mcp build",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

@@ -13,6 +13,6 @@
     "@clerk/mcp-tools": "^0.5.0",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "hono": "^4.12.27",
-    "sendkit-core": "workspace:*"
+    "@mrb-dev/sendkit-core": "workspace:*"
   }
 }
